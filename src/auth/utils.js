@@ -43,12 +43,12 @@ module.exports.getHistory = async (lat, lon) => {
     temperature[0]=call5.current.temp;
     return {temperature,humidity};
 }
-let makeTable=async (lat,lon,date)=>{
-    console.log(date.getDate());
-    return fetch(`https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${Math.round(date.getTime()/1000)}&units=metric&appid=70268da231c76995aafce228b1fdb766`).then((res)=>res.json());
-}
 module.exports.autoComplete=(query)=>{
     return fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=pk.eyJ1IjoicnVjaGlyMjgiLCJhIjoiY2tkdHd5NWd0MDhzaTJzbnN3emx6dng5NCJ9.B9avZvB1NZ-V2KOZbulUjw`)
     .then(res=>res.json())
     .catch((err)=>console.log(err));
+}
+let makeTable=async (lat,lon,date)=>{
+    console.log(date.getDate());
+    return fetch(`https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${Math.round(date.getTime()/1000)}&units=metric&appid=70268da231c76995aafce228b1fdb766`).then((res)=>res.json());
 }
