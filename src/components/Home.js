@@ -18,12 +18,33 @@ class Home extends Component {
         loading:false
     }
     async componentDidMount() {
-        // await navigator.geolocation.getCurrentPosition(async (position) => {
-        //     await this.setState(() => ({ lat: position.coords.latitude, lon: position.coords.longitude }));
-        //     await this.getweatherHERE();
-        // });
-        await this.setState(() => ({ lat: 24.73, lon: 75.93 }));
-        await this.getweatherHERE();
+        let item=await localStorage.getItem("location");
+        if(item)
+        {
+            console.log(item);
+            item=JSON.parse(item);
+            await this.setState(() => ({ lat: item.lat, lon:item.lon}));
+            await this.getweatherHERE();
+        }
+        else{
+           
+        await navigator.geolocation.getCurrentPosition(async (position) => {
+            await this.setState(() => ({ lat: position.coords.latitude, lon: position.coords.longitude }));
+            await this.getweatherHERE();
+        });
+        await navigator.geolocation.watchPosition(function(position) {
+            console.log("i'm tracking you!");
+          },
+          async (error)=>{
+            if (error.code == error.PERMISSION_DENIED)
+            await this.setState(() => ({ lat: 24.73, lon:75.34 }));
+            await this.getweatherHERE();  
+            console.log("you denied me :-(");
+          });
+          
+       }
+       console.log("here:i an",process.env.REACT_APP_CHECK);
+      
         //await getweather(this.state.lat,this.state.lon);
     }
 
@@ -35,6 +56,11 @@ class Home extends Component {
         let forecast = await getForecast(this.state.lat, this.state.lon);
         console.log(forecast);
         let arr=[];
+        let tostore={
+            lat:this.state.lat,
+            lon:this.state.lon
+        }
+        localStorage.setItem("location",JSON.stringify(tostore));
         for(let i=0;i<40;i++)
         {
             arr[i]=forecast.list[i];

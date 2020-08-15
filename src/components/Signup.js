@@ -5,20 +5,24 @@ import {Redirect} from 'react-router-dom';
  class Signup extends Component {
     state={
         email:'',
-        password:''
+        password:'',
+        loading:false,
+        error:''
     }
     handlechange=(field,val)=>{
         this.setState(()=>({[field]:val}));
     }
-    handleSubmit=()=>{
-        fireapp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
+    handleSubmit=async ()=>{
+         this.setState(()=>({loading:true}));
+        fireapp.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).catch((error)=>{
             // Handle Errors here.
             //let errorCode = error.code;
             let errorMessage = error.message;
             console.log(errorMessage);
+            this.setState(()=>({error:errorMessage}));
             // ...
           });
-          
+          this.setState(()=>({loading:false}));     
     }
     render() {
         if(this.props.user)
@@ -32,7 +36,17 @@ import {Redirect} from 'react-router-dom';
                 <Header as='h2' color='teal' textAlign='center'>
                         Sign Up
                     {/* {JSON.stringify(this.state)} */}
+                    
                 </Header>
+                <div class="alert alert-primary" role="alert">
+                            You will be automatically Signed in..
+                    </div>
+                {this.state.loading && <div class="alert alert-primary" role="alert">
+                            Signing in...
+                        </div>}
+                        {this.state.error && <div class="alert alert-danger" role="alert">
+                            {this.state.error}
+                        </div>}
                 <Form size='large'>
                     <Segment stacked>
                         <Form.Input fluid icon='user' 

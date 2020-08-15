@@ -1,26 +1,26 @@
 
 const API_KEY="70268da231c76995aafce228b1fdb766";
 const MAP_TOKEN="pk.eyJ1IjoicnVjaGlyMjgiLCJhIjoiY2tkdHd5NWd0MDhzaTJzbnN3emx6dng5NCJ9.B9avZvB1NZ-V2KOZbulUjw";
-module.exports.getweather = async (lat, lon) => {
+let getweather = async (lat, lon) => {
     return fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`).then((res)=>res.json());
     // const call=await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
     // const res=await call.json();
     // console.log("in function",res);
     // return res;
 }
-module.exports.getForecast = async (lat, lon) => {
+let getForecast = async (lat, lon) => {
     return fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`).then((res)=>res.json());
     // const call=await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
     // const res=await call.json();
     // console.log("in function",res);
     // return res;
 }
-module.exports.autoComplete=async (query)=>{
+let autoComplete=async (query)=>{
     return fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=pk.eyJ1IjoicnVjaGlyMjgiLCJhIjoiY2tkdHd5NWd0MDhzaTJzbnN3emx6dng5NCJ9.B9avZvB1NZ-V2KOZbulUjw`)
     .then(res=>res.json())
     .catch((err)=>console.log(err));
 }
-module.exports.getHistory = async (lat, lon) => {
+let getHistory = async (lat, lon) => {
     //return fetch(`https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=1597352228&units=metric&appid=70268da231c76995aafce228b1fdb766`).then((res)=>res.json());
     let today=new Date(Date.now());
     today.setDate(today.getDate()-1);
@@ -53,3 +53,4 @@ let makeTable=async (lat,lon,date)=>{
     console.log(date.getDate());
     return fetch(`https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${Math.round(date.getTime()/1000)}&units=metric&appid=70268da231c76995aafce228b1fdb766`).then((res)=>res.json());
 }
+export {getForecast,getweather,getHistory,autoComplete};

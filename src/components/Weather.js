@@ -30,7 +30,7 @@ class Weather extends React.Component {
           />
         </Step.Group>
         <div style={{display:'flex',flexDirection:'row',justifyContent:'space-evenly',marginTop:'100px',flexWrap:'wrap'}}>
-        {this.props.forecast.list.map((elem)=>{
+        {this.props.forecast && this.props.forecast.list.map((elem)=>{
           return(<WeatherCard weather={elem} desc={elem.weather[0].main}></WeatherCard>)
         })}
         </div>
